@@ -1,0 +1,214 @@
+/* 0. Imports (add these to your HTML <head>)
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@500&family=Roboto:wght@400&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+*/
+
+/* 1. Variables & Reset */
+:root[data-theme="dark"] {
+  --primary-color: #64ffda;
+  --secondary-text: #aaa;
+  --bg-color: #000;
+  --text-color: #fff;
+  --overlay-1: rgba(255,255,255,0.1);
+  --overlay-2: rgba(255,255,255,0.2);
+  --container-radius: 15px;
+  --button-radius: 25px;
+  --circle-radius: 50%;
+  --shadow: 0 0 20px var(--overlay-1);
+  --button-shadow-hover: 0 5px 15px var(--overlay-2);
+  --container-padding: 40px;
+  --section-margin: 30px;
+  --element-gap: 20px;
+  --transition: all 0.3s ease;
+  --fadein-duration: 1s;
+  --font-heading: 'Poppins', sans-serif;
+  --font-body: 'Roboto', sans-serif;
+  --gradient-start: #fff;
+  --gradient-end: #aaa;
+}
+:root[data-theme="light"] {
+  --primary-color: #64ffda;
+  --secondary-text: #aaa;
+  --bg-color: #fff;
+  --text-color: #000;
+  --overlay-1: rgba(0,0,0,0.05);
+  --overlay-2: rgba(0,0,0,0.12);
+  --container-radius: 15px;
+  --button-radius: 25px;
+  --circle-radius: 50%;
+  --shadow: 0 0 20px var(--overlay-1);
+  --button-shadow-hover: 0 5px 15px var(--overlay-2);
+  --container-padding: 40px;
+  --section-margin: 30px;
+  --element-gap: 20px;
+  --transition: all 0.3s ease;
+  --fadein-duration: 1s;
+  --font-heading: 'Poppins', sans-serif;
+  --font-body: 'Roboto', sans-serif;
+  --gradient-start: #222;
+  --gradient-end: #222;
+}
+
+body {
+  background: var(--bg-color);
+  color: var(--text-color);
+  font-family: var(--font-body);
+  margin: 0;
+  padding: 0;
+  min-height: 100vh;
+  line-height: 1.6;
+}
+
+/* 2. Typography */
+h1, h2, h3, h4, h5, h6 {
+  font-family: var(--font-heading);
+  font-weight: 500;
+  margin-top: 0;
+}
+body, p, li, span, a {
+  font-family: var(--font-body);
+  font-weight: 400;
+}
+.gradient-text {
+  background: linear-gradient(to right, var(--gradient-start), var(--gradient-end));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+/* 3. Layout & Grid */
+.container {
+  max-width: 800px;
+  margin: 0 auto;
+  padding: var(--container-padding);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 100vh;
+}
+.section {
+  margin: var(--section-margin) 0;
+}
+.grid {
+  display: grid;
+  gap: var(--element-gap);
+}
+
+/* 4. Components */
+.card, .container-card {
+  background: var(--overlay-1);
+  border-radius: var(--container-radius);
+  box-shadow: var(--shadow);
+  padding: var(--container-padding);
+  backdrop-filter: blur(5px);
+  color: var(--text-color);
+}
+
+.card {
+  background: var(--overlay-1);
+  border-radius: 16px;
+  padding: 16px;
+  box-shadow: 0 0 10px #00000040;
+  text-align: center;
+}
+
+.input {
+  padding: 10px;
+  border-radius: 8px;
+  border: 1px solid var(--text-color);
+  background: var(--bg-color);
+  color: var(--text-color);
+}
+
+.button, button {
+  padding: 12px 25px;
+  border-radius: var(--button-radius);
+  border: 1px solid var(--text-color);
+  background: transparent;
+  color: var(--text-color);
+  font-family: var(--font-heading);
+  font-weight: 500;
+  cursor: pointer;
+  transition: var(--transition);
+  box-shadow: none;
+}
+.button:hover, button:hover {
+  transform: translateY(-3px);
+  box-shadow: var(--button-shadow-hover);
+  background: var(--overlay-2);
+}
+.button:active, button:active {
+  transform: translateY(-1px);
+}
+.button.secondary {
+  border: 1px solid var(--secondary-text);
+  color: var(--secondary-text);
+}
+.icon {
+  font-size: 1.2em;
+  transition: var(--transition);
+}
+.icon:hover {
+  transform: scale(1.2);
+}
+.circle {
+  border-radius: var(--circle-radius);
+}
+
+/* Glass Morphism */
+.glass-effect {
+  background: var(--overlay-1);
+  backdrop-filter: blur(5px);
+  border: 2px solid var(--overlay-2);
+}
+
+/* 5. Utilities */
+.text-center { text-align: center; }
+.mt-2 { margin-top: 20px; }
+.mb-2 { margin-bottom: 20px; }
+.gap-2 { gap: 20px; }
+
+/* 6. Animations */
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+.fade-in {
+  animation: fadeIn var(--fadein-duration) ease;
+}
+@keyframes blink-caret {
+  0%, 100% { border-color: transparent; }
+  50% { border-color: var(--primary-color); }
+}
+.typing-effect {
+  border-right: 2px solid var(--primary-color);
+  animation: blink-caret 0.75s step-end infinite;
+}
+
+/* 7. Interactive Elements */
+.interactive-element {
+  transition: var(--transition);
+}
+.interactive-element:hover {
+  transform: scale(1.05);
+  background: var(--overlay-2);
+}
+
+/* 8. Responsive Design */
+@media (max-width: 768px) {
+  .container {
+    padding: 20px;
+  }
+  .heading, h1 {
+    font-size: 1.8em;
+  }
+  .grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* 9. Accessibility & Best Practices */
+:focus {
+  outline: 2px solid var(--primary-color);
+  outline-offset: 2px;
+}
