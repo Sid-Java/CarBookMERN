@@ -1,93 +1,122 @@
+require('dotenv').config();
 const mongoose = require('mongoose');
 const Vehicle = require('./models/Vehicle');
 
-// Connect to MongoDB
-mongoose.connect("mongodb+srv://sidharthganesh07:hmxde@cluster0.lkmqny.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0")
-  .then(() => {
-    console.log("✅ MongoDB connected");
-    seedCars();
-  })
-  .catch(err => console.error("❌ Connection error:", err));
-
-const carData = [
+const vehicles = [
   {
-    name: "Mahindra Thar",
-    brand: "Mahindra",
-    price: 5000,
-    type: "Car",
-    image: "/images/thar.jpg"
-  },
-  {
-    name: "Tata Nexon",
-    brand: "Tata",
-    price: 3200,
-    type: "Car",
-    image: "/images/nexon.jpg"
-  },
-  {
-    name: "Maruti Suzuki Brezza",
+    name: "Baleno",
     brand: "Maruti Suzuki",
-    price: 3100,
     type: "Car",
-    image: "/images/brezza.jpg"
+    price: 800,
+    image: "/images/baleno.jpg",
+    description: "Premium hatchback with great fuel efficiency"
   },
   {
-    name: "Hyundai Creta",
+    name: "Brezza",
+    brand: "Maruti Suzuki",
+    type: "SUV",
+    price: 1000,
+    image: "/images/brezza.jpg",
+    description: "Compact SUV with modern features"
+  },
+  {
+    name: "Creta",
     brand: "Hyundai",
-    price: 4000,
-    type: "Car",
-    image: "/images/creta.jpg"
+    type: "SUV",
+    price: 1200,
+    image: "/images/creta.jpg",
+    description: "Mid-size SUV with premium features"
   },
   {
-    name: "Kia Seltos",
-    brand: "Kia",
-    price: 3900,
-    type: "Car",
-    image: "/images/seltos.jpg"
-  },
-  {
-    name: "Toyota Fortuner",
-    brand: "Toyota",
-    price: 7200,
-    type: "Car",
-    image: "/images/fortuner.jpg"
-  },
-  {
-    name: "Renault Kiger",
-    brand: "Renault",
-    price: 2800,
-    type: "Car",
-    image: "/images/kiger.jpg"
-  },
-  {
-    name: "Honda Elevate",
+    name: "Elevate",
     brand: "Honda",
-    price: 3500,
-    type: "Car",
-    image: "/images/elevate.jpg"
+    type: "SUV",
+    price: 1100,
+    image: "/images/elevate.jpg",
+    description: "Stylish SUV with advanced safety features"
   },
   {
-    name: "MG Hector",
+    name: "Fortuner",
+    brand: "Toyota",
+    type: "SUV",
+    price: 2500,
+    image: "/images/fortuner.jpg",
+    description: "Luxury SUV with powerful performance"
+  },
+  {
+    name: "Hector",
     brand: "MG",
-    price: 4500,
-    type: "Car",
-    image: "/images/hector.jpg"
+    type: "SUV",
+    price: 1800,
+    image: "/images/hector.jpg",
+    description: "Feature-rich SUV with connected car technology"
   },
   {
-    name: "Volkswagen Virtus",
+    name: "Kiger",
+    brand: "Renault",
+    type: "SUV",
+    price: 900,
+    image: "/images/kiger.jpg",
+    description: "Compact SUV with modern design"
+  },
+  {
+    name: "Nexon",
+    brand: "Tata",
+    type: "SUV",
+    price: 1000,
+    image: "/images/nexon.jpg",
+    description: "Safe and reliable compact SUV"
+  },
+  {
+    name: "Seltos",
+    brand: "Kia",
+    type: "SUV",
+    price: 1300,
+    image: "/images/seltos.jpg",
+    description: "Feature-loaded mid-size SUV"
+  },
+  {
+    name: "Thar",
+    brand: "Mahindra",
+    type: "SUV",
+    price: 1500,
+    image: "/images/thar.jpg",
+    description: "Iconic off-road SUV"
+  },
+  {
+    name: "Virtus",
     brand: "Volkswagen",
-    price: 4300,
     type: "Car",
-    image: "/images/virtus.jpg"
+    price: 1200,
+    image: "/images/virtus.jpg",
+    description: "Premium sedan with German engineering"
   }
 ];
 
-async function seedCars() {
+const seedDatabase = async () => {
   try {
-    await Vehicle.insertMany(carData);
-    console.log("🚗 10 car records inserted successfully!");
-    mongoose.disconnect();
-  } catch (err) {
-    console.error("❌ Failed to insert:", err);
+    // Connect to MongoDB
+    await mongoose.connect(process.env.MONGODB_URI);
+    console.log('Connected to MongoDB...');
+
+    // Clear existing vehicles
+    await Vehicle.deleteMany({});
+    console.log('Cleared existing vehicles...');
+
+    // Insert new vehicles
+    const result = await Vehicle.insertMany(vehicles);
+    console.log(`✅ Successfully seeded ${result.length} vehicles!`);
+
+    // Disconnect from MongoDB
+    await mongoose.disconnect();
+    console.log('\nDisconnected from MongoDB.');
+    
+    process.exit(0);
+  } catch (error) {
+    console.error('❌ Error seeding database:', error);
+    process.exit(1);
   }
-}
+};
+
+// Run the seeding
+seedDatabase();

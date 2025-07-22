@@ -1,9 +1,55 @@
 #root {
-  max-width: 1280px;
-  margin: 0 auto;
-  padding: 2rem;
-  text-align: center;
+  min-height: 100vh;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
 }
+
+.app {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+}
+
+main {
+  flex: 1;
+  width: 100%;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 24px;
+  padding-top: 88px; /* navbar height + spacing */
+}
+
+.card {
+  background: var(--overlay-1);
+  border-radius: 16px;
+  padding: 24px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  margin-bottom: 16px;
+}
+
+/* Remove any conflicting styles */
+body {
+  margin: 0;
+  padding: 0;
+  min-height: 100vh;
+}
+
+/* Keep footer at bottom */
+footer {
+  margin-top: auto;
+  width: 100%;
+  padding: 24px;
+  background: var(--nav-bg);
+  border-top: 1px solid var(--overlay-2);
+}
+
+.main-content p {
+  margin-top: 60px;
+}
+
 
 .logo {
   height: 6em;
@@ -31,10 +77,6 @@
   a:nth-of-type(2) .logo {
     animation: logo-spin infinite 20s linear;
   }
-}
-
-.card {
-  padding: 2em;
 }
 
 .read-the-docs {

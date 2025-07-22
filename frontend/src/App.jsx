@@ -1,61 +1,125 @@
-import React, { useState, useEffect } from 'react';
-import { BrowserRouter, Routes, Route, Link } from 'react-router-dom';
+import React from 'react';
+import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
+import { ThemeProvider, CssBaseline } from '@mui/material';
+import { AuthProvider, useAuth } from './context/AuthContext';
+import theme from './theme';
+
+// Pages
 import Home from './pages/Home';
 import Browse from './pages/Browse';
 import VehicleDetails from './pages/VehicleDetails';
 import BookVehicle from './pages/BookVehicle';
+import Login from './pages/Login';
+import Register from './pages/Register';
+import AdminDashboard from './pages/AdminDashboard';
+import ManageVehicles from './pages/ManageVehicles';
+import AllBookings from './pages/AllBookings';
 import MyBookings from './pages/MyBookings';
-import './App.css';
+
+// Components
 import TabBar from './component/TabBar';
+import Footer from './component/Footer';
 
-function App() {
-  // Theme state: 'dark' or 'light'
-  const [theme, setTheme] = useState(() => {
-    // Try to load from localStorage, else use prefers-color-scheme
-    const saved = localStorage.getItem('theme');
-    if (saved) return saved;
-    return window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
-  });
+// Protected Route Components
+const ProtectedRoute = ({ children, requireAdmin }) => {
+  const { isAuthenticated, isAdmin } = useAuth();
 
-  useEffect(() => {
-    document.documentElement.setAttribute('data-theme', theme);
-    localStorage.setItem('theme', theme);
-  }, [theme]);
+  if (!isAuthenticated) {
+    return <Navigate to="/login" />;
+  }
 
-  const toggleTheme = () => setTheme(theme === 'dark' ? 'light' : 'dark');
+  if (requireAdmin && !isAdmin) {
+    return <Navigate to="/" />;
+  }
 
+  return children;
+};
+
+const AdminRoute = ({ children }) => (
+  <ProtectedRoute requireAdmin>{children}</ProtectedRoute>
+);
+
+const UserRoute = ({ children }) => (
+  <ProtectedRoute requireAdmin={false}>{children}</ProtectedRoute>
+);
+
+const App = () => {
   return (
-    <BrowserRouter>
-      <TabBar />
-      {/* Theme toggle button */}
-      <button
-        onClick={toggleTheme}
-        aria-label={theme === 'dark' ? 'Switch to light mode' : 'Switch to dark mode'}
-        style={{
-          position: 'fixed',
-          right: 16,
-          top: 16,
-          background: 'none',
-          border: 'none',
-          fontSize: 28,
-          cursor: 'pointer',
-          color: 'var(--primary-color)',
-          padding: 8,
-          transition: 'color 0.3s',
-          zIndex: 1001,
-        }}
-      >
-        {theme === 'dark' ? '☀️' : '🌙'}
-      </button>
-      <Routes>
-        <Route path="/" element={<Home />} />
-        <Route path="/browse" element={<Browse />} />
-        <Route path="/vehicle/:id" element={<VehicleDetails />} />
-        <Route path="/book" element={<BookVehicle />} />
-        <Route path="/my-bookings" element={<MyBookings />} />
-      </Routes>
-    </BrowserRouter>
-  );
-}
+    <ThemeProvider theme={theme}>
+      <CssBaseline />
+      <AuthProvider>
+        <Router>
+          <div
+            className="app"
+            style={{
+              display: 'flex',
+              flexDirection: 'column',
+              minHeight: '100vh',
+            }}
+          >
+            <TabBar />
+            <main style={{ flex: 1 }}>
+              <Routes>
+                {/* Public Routes */}
+                <Route path="/" element={<Home />} />
+                <Route path="/browse" element={<Browse />} />
+                <Route path="/vehicle/:id" element={<VehicleDetails />} />
+                <Route path="/login" element={<Login />} />
+                <Route path="/register" element={<Register />} />
 
+                {/* Protected User Routes */}
+                <Route
+                  path="/book/:vehicleId"
+                  element={
+                    <UserRoute>
+                      <BookVehicle />
+                    </UserRoute>
+                  }
+                />
+                <Route
+                  path="/my-bookings"
+                  element={
+                    <UserRoute>
+                      <MyBookings />
+                    </UserRoute>
+                  }
+                />
+
+                {/* Protected Admin Routes */}
+                <Route
+                  path="/admin"
+                  element={
+                    <AdminRoute>
+                      <AdminDashboard />
+                    </AdminRoute>
+                  }
+                />
+                <Route
+                  path="/admin/vehicles"
+                  element={
+                    <AdminRoute>
+                      <ManageVehicles />
+                    </AdminRoute>
+                  }
+                />
+                <Route
+                  path="/admin/bookings"
+                  element={
+                    <AdminRoute>
+                      <AllBookings />
+                    </AdminRoute>
+                  }
+                />
+
+                {/* Catch-all redirect */}
+                <Route path="*" element={<Navigate to="/" replace />} />
+              </Routes>
+            </main>
+            <Footer />
+          </div>
+        </Router>
+      </AuthProvider>
+    </ThemeProvider>
+  );
+};
 export default App;

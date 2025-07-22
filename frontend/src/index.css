@@ -8,6 +8,7 @@
   --primary-color: #64ffda;
   --secondary-text: #aaa;
   --bg-color: #000;
+  --nav-bg: rgba(18, 18, 18, 0.98);
   --text-color: #fff;
   --overlay-1: rgba(255,255,255,0.1);
   --overlay-2: rgba(255,255,255,0.2);
@@ -26,10 +27,12 @@
   --gradient-start: #fff;
   --gradient-end: #aaa;
 }
+
 :root[data-theme="light"] {
   --primary-color: #64ffda;
   --secondary-text: #aaa;
   --bg-color: #fff;
+  --nav-bg: rgba(255, 255, 255, 0.98);
   --text-color: #000;
   --overlay-1: rgba(0,0,0,0.05);
   --overlay-2: rgba(0,0,0,0.12);
@@ -49,14 +52,123 @@
   --gradient-end: #222;
 }
 
+/* Reset and base styles */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
 body {
   background: var(--bg-color);
   color: var(--text-color);
   font-family: var(--font-body);
-  margin: 0;
-  padding: 0;
-  min-height: 100vh;
   line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* Navbar Styles */
+.navbar {
+  position: fixed !important;
+  top: 0 !important;
+  left: 0 !important;
+  right: 0 !important;
+  height: 64px !important;
+  background: var(--nav-bg) !important;
+  border-bottom: 1px solid var(--overlay-2) !important;
+  box-shadow: 0 2px 12px rgba(0, 0, 0, 0.15) !important;
+  z-index: 1000 !important;
+}
+
+.navbar-container {
+  max-width: 1200px !important;
+  height: 100% !important;
+  margin: 0 auto !important;
+  padding: 0 24px !important;
+  display: flex !important;
+  justify-content: space-between !important;
+  align-items: center !important;
+}
+
+.navbar-left {
+  display: flex !important;
+  gap: 16px !important;
+  align-items: center !important;
+}
+
+.navbar-right {
+  position: relative !important;
+}
+
+.navbar-link {
+  padding: 8px 16px !important;
+  border-radius: 8px !important;
+  color: var(--text-color) !important;
+  text-decoration: none !important;
+  font-weight: 500 !important;
+  transition: all 0.2s ease !important;
+  border: 1px solid transparent !important;
+  background: transparent !important;
+  cursor: pointer !important;
+  font-family: var(--font-body) !important;
+  font-size: 15px !important;
+  display: inline-block !important;
+}
+
+.navbar-link:hover {
+  background: var(--overlay-1) !important;
+  transform: translateY(-1px) !important;
+}
+
+.navbar-link.active {
+  background: var(--overlay-2) !important;
+  border-color: var(--primary-color) !important;
+}
+
+.dropdown-menu {
+  position: absolute !important;
+  top: calc(100% + 8px) !important;
+  right: 0 !important;
+  background: var(--nav-bg) !important;
+  border: 1px solid var(--overlay-2) !important;
+  border-radius: 12px !important;
+  padding: 8px !important;
+  min-width: 180px !important;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2) !important;
+  backdrop-filter: blur(10px) !important;
+  -webkit-backdrop-filter: blur(10px) !important;
+}
+
+.dropdown-item {
+  display: block !important;
+  padding: 10px 16px !important;
+  color: var(--text-color) !important;
+  text-decoration: none !important;
+  border-radius: 8px !important;
+  transition: all 0.2s ease !important;
+  font-size: 15px !important;
+  width: 100% !important;
+  text-align: left !important;
+}
+
+.dropdown-item:hover {
+  background: var(--overlay-1) !important;
+}
+
+/* Navigation Styles */
+.nav-link:hover, .dropdown-link:hover {
+  background: var(--overlay-1) !important;
+  transform: translateY(-1px) !important;
+}
+
+.nav-link.active {
+  background: var(--overlay-2) !important;
+  border-color: var(--primary-color) !important;
+}
+
+.dropdown-link:active {
+  background: var(--overlay-2) !important;
 }
 
 /* 2. Typography */
